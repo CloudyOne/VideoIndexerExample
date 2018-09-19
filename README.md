@@ -1,6 +1,6 @@
 # VideoIndexerExample
 
-This project is an example of difference ways i've tried to use the v2 Video Indexer API so i can get some assistance from the Video Indexer development team
+This project is an example of different ways i've tried to use the v2 Video Indexer API so i can get some assistance from the Video Indexer development team
 
 ### Prerequisites
 
