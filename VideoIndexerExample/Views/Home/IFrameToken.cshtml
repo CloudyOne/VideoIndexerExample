@@ -1,0 +1,7 @@
+﻿
+@{
+    ViewData["Title"] = string.Format("Manual IFrame using {0}", ViewBag.TitleFunction) ;
+}
+<iframe width="560" height="315" src="https://www.videoindexer.ai/embed/player/@(ViewBag.AccountId)/@(ViewBag.Id)?accessToken=@ViewBag.AccessToken" frameborder="0" allowfullscreen></iframe>
+<iframe width="680" height="780" src="https://www.videoindexer.ai/embed/insights/@(ViewBag.AccountId)/@(ViewBag.Id)?accessToken=@ViewBag.AccessToken" frameborder="0" allowfullscreen></iframe>
+<script src="https://breakdown.blob.core.windows.net/public/vb.widgets.mediator.js"></script>
