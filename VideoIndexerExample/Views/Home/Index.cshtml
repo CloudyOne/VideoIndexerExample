@@ -81,10 +81,7 @@
 @foreach (var item in Model) {
     <tr class="@(item.State=="Failed" ? " trFailed":"")">
         <td colspan="2">
-            @Html.ActionLink("iFrame AccountToken", "IFrameToken", new { id = item.Id }) <br />
-            @Html.ActionLink("iFrame VideoToken", "IFrameVideoToken", new { id = item.Id }) <br />
-            @Html.ActionLink("iFrame UserToken", "IFrameUserToken", new { id = item.Id }) <br />
-            @Html.ActionLink("API iFrame", "apiiframe", new { id = item.Id })
+            @Html.ActionLink("Edit Video", "Edit", new { id = item.Id }) <br />
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.AccountId)

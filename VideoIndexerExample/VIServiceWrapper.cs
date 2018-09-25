@@ -14,6 +14,7 @@ namespace VideoIndexerExample
     {
         private string _accessToken { get; set; }
         private DateTime? _accessTokenExpires { get; set; }
+        public string EmbedSubdomain { get; private set; }
 
         private string ApiKey { get; set; }
         public string Location { get; private set; }
@@ -38,8 +39,11 @@ namespace VideoIndexerExample
             }
         }
 
-        public VIServiceWrapper(string apiKey, string location, string accountId, string apiUrl)
+        public VIServiceWrapper(string accountId, string apiKey, string location, string embedSubdomain, string apiUrl)
         {
+            if (embedSubdomain == null)
+                throw new ArgumentNullException("EmbedSubdomain must not be empty.", nameof(embedSubdomain));
+
             if (string.IsNullOrEmpty(apiKey))
             {
                 throw new ArgumentException("ApiKey must not be empty.", nameof(apiKey));
@@ -62,10 +66,11 @@ namespace VideoIndexerExample
 
             this.ApiKey = apiKey;
             this.Location = location;
+            this.EmbedSubdomain = embedSubdomain;
             this.AccountId = accountId;
             this.ApiUrl = apiUrl;
         }
-        
+
         #region Generic
 
         private async Task<HttpResponseMessage> ExecuteAsync(string uri, HttpMethod method,
@@ -130,6 +135,18 @@ namespace VideoIndexerExample
             response = await ExecuteAsync($"{Location}/Accounts/{AccountId}/Videos/{videoId}/InsightsWidget?{queryString}", HttpMethod.Get);
             if (response?.Content != null) content = await response.Content.ReadAsStringAsync();
             return string.Join(" ", Regex.Split(content, @"(?:\r\n|\n|\r)"));
+        }
+
+        public async Task<string> GetInsightsEmbedUrl(string videoId)
+        {
+            var accessToken = await GetVideoAccessToken(videoId);
+            return $"https://{EmbedSubdomain}.videoindexer.ai/embed/insights/{AccountId}/{videoId}?accessToken={accessToken}";
+        }
+
+        public async Task<string> GetPlayerEmbedUrl(string videoId)
+        {
+            var accessToken = await GetVideoAccessToken(videoId);
+            return $"https://{EmbedSubdomain}.videoindexer.ai/embed/player/{AccountId}/{videoId}?accessToken={accessToken}";
         }
 
         public async Task<string> GetPlayerHtml(string videoId)

@@ -1,0 +1,7 @@
+﻿
+@{
+    ViewData["Title"] = string.Format("IFrame using {0}", ViewBag.TitleFunction) ;
+}
+<iframe width="560" height="315" src="@(ViewBag.PlayerUrl)" frameborder="0" allowfullscreen></iframe>
+<iframe width="680" height="780" src="@(ViewBag.InsightsUrl)" frameborder="0" allowfullscreen></iframe>
+<script src="https://breakdown.blob.core.windows.net/public/vb.widgets.mediator.js"></script>

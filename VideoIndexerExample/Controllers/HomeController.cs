@@ -10,7 +10,7 @@ namespace VideoIndexerExample.Controllers
 {
     public class HomeController : Controller
     {
-        internal VIServiceWrapper vi = new VIServiceWrapper("apiKey", "location", "accountId", "https://api.videoindexer.ai/");
+        internal VIServiceWrapper vi = new VIServiceWrapper("accountID Guid","apiKey", "location, ie. westus2","location subdomain, ie. wus2", "https://api.videoindexer.ai/");
         public IActionResult Index()
         {
             var videos = AsyncHelper.RunSync(()=> vi.GetAllVideos(500));
@@ -30,50 +30,15 @@ namespace VideoIndexerExample.Controllers
             return View();
         }
 
-        public IActionResult IFrameToken(string id)
+        public IActionResult Edit(string id)
         {
-            ViewBag.AccessToken = AsyncHelper.RunSync(() => vi.GetAccessToken());
-            ViewBag.AccountId = vi.AccountId;
-            ViewBag.Id = id;
+            ViewBag.PlayerUrl = AsyncHelper.RunSync(() => vi.GetPlayerEmbedUrl(id));
+            ViewBag.InsightsUrl = AsyncHelper.RunSync(() => vi.GetInsightsEmbedUrl(id));
             ViewBag.TitleFunction = "GetAccessToken()";
             return View();
         }
 
-        public IActionResult IFrameVideoToken(string id)
-        {
-            ViewBag.AccessToken = AsyncHelper.RunSync(() => vi.GetVideoAccessToken(id));
-            ViewBag.AccountId = vi.AccountId;
-            ViewBag.Id = id;
-            ViewBag.TitleFunction = "GetVideoAccessToken()";
-            return View("IFrameToken");
-        }
-        public IActionResult IFrameUserToken(string id)
-        {
-            ViewBag.AccessToken = AsyncHelper.RunSync(() => vi.GetUserAccessToken());
-            ViewBag.AccountId = vi.AccountId;
-            ViewBag.Id = id;
-            ViewBag.TitleFunction = "GetUserAccessToken()";
-            return View("IFrameToken");
-        }
-        public IActionResult APIIframe(string id)
-        {
-            ViewBag.PlayerHtml = System.Web.HttpUtility.HtmlEncode(AsyncHelper.RunSync(() => vi.GetPlayerHtml(id)));
-            ViewBag.InsightsHtml = System.Web.HttpUtility.HtmlEncode(AsyncHelper.RunSync(() => vi.GetInsightsHtml(id, true)));
-            ViewBag.Id = id;
-            return View();
-        }
-
-        public IActionResult PlayerFrame(string id)
-        {
-            ViewBag.Html = AsyncHelper.RunSync(() => vi.GetPlayerHtml(id));
-            return View("FrameSrc");
-        }
-
-        public IActionResult InsightsFrame(string id)
-        {
-            ViewBag.Html = AsyncHelper.RunSync(() => vi.GetInsightsHtml(id, true));
-            return View("FrameSrc");
-        }
+        
 
         public IActionResult Privacy()
         {
